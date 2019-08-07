@@ -18,7 +18,7 @@ use FOS\RestBundle\Controller\Annotations as FOSRest;
  * Class CategoriesController
  * @package App\Controller
  *
- * @Route("/api")
+ * @Route("/api/categories")
  */
 class CategoriesController extends AbstractController {
     /**
@@ -43,7 +43,7 @@ class CategoriesController extends AbstractController {
     }
 
     /**
-     * @FOSRest\Get("/categories")
+     * @FOSRest\Get("/")
      *
      * @return View
      */
@@ -55,7 +55,7 @@ class CategoriesController extends AbstractController {
 
     /**
      * Create Category
-     * @FOSRest\Post("/category")
+     * @FOSRest\Post("/")
      *
      * @param $request Request
      * @return View
@@ -72,7 +72,7 @@ class CategoriesController extends AbstractController {
 
     /**
      * Delete category
-     * @FOSRest\Delete("/category/{id}")
+     * @FOSRest\Delete("/{id}")
      *
      * @param $id string
      * @return View
@@ -92,7 +92,7 @@ class CategoriesController extends AbstractController {
 
     /**
      * Edit category
-     * @FOSRest\Put("/category/{id}")
+     * @FOSRest\Put("/{id}")
      *
      * @param $request Request
      * @param $serializer SerializerInterface
