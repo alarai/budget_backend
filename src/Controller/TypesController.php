@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\CategoriesRepository;
+use App\Repository\TypesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
 use JMS\Serializer\SerializerInterface;
@@ -14,31 +14,31 @@ use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\Annotations as FOSRest;
 
 /**
- * Class CategoriesController
+ * Class TypesController
  * @package App\Controller
  *
- * @Route("/api/categories")
+ * @Route("/api/types")
  */
-class CategoriesController extends AbstractController {
+class TypesController extends AbstractController {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
 
     /**
-     * @var CategoriesRepository
+     * @var typesRepository
      */
-    private $categoriesRepository;
+    private $typesRepository;
 
     /**
      * CategoriesController constructor.
      * @param EntityManagerInterface $entityManager
-     * @param CategoriesRepository $repository
+     * @param typesRepository $repository
      */
-    public function __construct(EntityManagerInterface $entityManager, CategoriesRepository $repository)
+    public function __construct(EntityManagerInterface $entityManager, TypesRepository $repository)
     {
         $this->entityManager = $entityManager;
-        $this->categoriesRepository = $repository;
+        $this->typesRepository = $repository;
     }
 
     /**
@@ -47,9 +47,9 @@ class CategoriesController extends AbstractController {
      * @return View
      */
     public function getAll() {
-        $categories = $this->categoriesRepository->findAll();
+        $types = $this->typesRepository->findAll();
 
-        return View::create($categories, Response::HTTP_OK);
+        return View::create($types, Response::HTTP_OK);
     }
 
     /**
@@ -59,9 +59,9 @@ class CategoriesController extends AbstractController {
      * @return View
      */
     public function get($id) {
-        $categories = $this->categoriesRepository->find($id);
+        $type = $this->typesRepository->find($id);
 
-        return View::create($categories, Response::HTTP_OK);
+        return View::create($type, Response::HTTP_OK);
     }
 
     /**
@@ -73,7 +73,7 @@ class CategoriesController extends AbstractController {
      * @return View
      */
     public function add(Request $request, SerializerInterface $serializer) {
-        $category = $serializer->deserialize($request->getContent(), 'App\Entity\Categories', 'json');
+        $category = $serializer->deserialize($request->getContent(), 'App\Entity\Types', 'json');
 
         $this->entityManager->persist($category);
         $this->entityManager->flush();
@@ -89,13 +89,13 @@ class CategoriesController extends AbstractController {
      * @return View
      */
     public function delete($id) {
-        $category = $this->categoriesRepository->find($id);
+        $type = $this->typesRepository->find($id);
 
-        if($category !== null) {
-            $this->entityManager->remove($category);
+        if($type !== null) {
+            $this->entityManager->remove($type);
             $this->entityManager->flush();
 
-            return View::create($category, Response::HTTP_OK);
+            return View::create($type, Response::HTTP_OK);
         }
 
         return View::create(null, Response::HTTP_NOT_FOUND);
@@ -111,16 +111,16 @@ class CategoriesController extends AbstractController {
      * @return View
      */
     public function update(Request $request, SerializerInterface $serializer, $id) {
-        $categoryMod = $serializer->deserialize($request->getContent(), 'App\Entity\Categories', 'json');
+        $typeMod = $serializer->deserialize($request->getContent(), 'App\Entity\Types', 'json');
 
-        $category = $this->categoriesRepository->find($id);
+        $type = $this->typesRepository->find($id);
 
-        if($category !== null) {
-            $category->setName($categoryMod->getName());
-            $this->entityManager->persist($category);
+        if($type !== null) {
+            $type->setName($typeMod->getName());
+            $this->entityManager->persist($type);
             $this->entityManager->flush();
 
-            return View::create($category, Response::HTTP_OK);
+            return View::create($type, Response::HTTP_OK);
         }
 
         return View::create(null, Response::HTTP_NOT_FOUND);
