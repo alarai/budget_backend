@@ -43,7 +43,7 @@ class CategoriesController extends AbstractController {
     }
 
     /**
-     * @FOSRest\Get("/")
+     * @FOSRest\Get("")
      *
      * @return View
      */
@@ -54,15 +54,27 @@ class CategoriesController extends AbstractController {
     }
 
     /**
-     * Create Category
-     * @FOSRest\Post("/")
+     * @FOSRest\Get("/{id}")
      *
-     * @param $request Request
+     * @param $id integer
      * @return View
      */
-    public function add(Request $request) {
-        $category = new Categories();
-        $category->setName($request->get('name'));
+    public function get($id) {
+        $categories = $this->categoriesRepository->find($id);
+
+        return View::create($categories, Response::HTTP_OK);
+    }
+
+    /**
+     * Create Category
+     * @FOSRest\Post("")
+     *
+     * @param $request Request
+     * @param $serializer SerializerInterface
+     * @return View
+     */
+    public function add(Request $request, SerializerInterface $serializer) {
+        $category = $serializer->deserialize($request->getContent(), 'App\Entity\Categories', 'json');
 
         $this->entityManager->persist($category);
         $this->entityManager->flush();
