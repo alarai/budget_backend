@@ -28,9 +28,15 @@ class Types
      */
     private $recurings;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Currents", mappedBy="type")
+     */
+    private $currents;
+
     public function __construct()
     {
         $this->recurings = new ArrayCollection();
+        $this->currents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,6 +81,37 @@ class Types
             // set the owning side to null (unless already changed)
             if ($recuring->getTypes() === $this) {
                 $recuring->setTypes(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Currents[]
+     */
+    public function getCurrents(): Collection
+    {
+        return $this->currents;
+    }
+
+    public function addCurrent(Currents $current): self
+    {
+        if (!$this->currents->contains($current)) {
+            $this->currents[] = $current;
+            $current->setType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCurrent(Currents $current): self
+    {
+        if ($this->currents->contains($current)) {
+            $this->currents->removeElement($current);
+            // set the owning side to null (unless already changed)
+            if ($current->getType() === $this) {
+                $current->setType(null);
             }
         }
 
