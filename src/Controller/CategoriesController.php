@@ -60,6 +60,9 @@ class CategoriesController extends AbstractController {
      */
     public function get($id) {
         $categories = $this->categoriesRepository->find($id);
+        if(!$categories) {
+            return View::create(null, Response::HTTP_NOT_FOUND);
+        }
 
         return View::create($categories, Response::HTTP_OK);
     }

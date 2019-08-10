@@ -139,5 +139,13 @@ class RecuringController extends AbstractController {
         return View::create(null, Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @FOSRest\Get("unused")
+     * @return View
+     */
+    public function getUnusedRecurings() {
+        $recurings = $this->recuringRepository->getNotUsedInCurrent();
 
+        return View::create($recurings, Response::HTTP_OK);
+    }
 }

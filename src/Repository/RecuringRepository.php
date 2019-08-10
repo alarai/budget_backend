@@ -19,6 +19,16 @@ class RecuringRepository extends ServiceEntityRepository
         parent::__construct($registry, Recuring::class);
     }
 
+    public function getNotUsedInCurrent()
+    {
+        $used = $this->createQueryBuilder('c1')->select('c1.id')->join('App\Entity\Currents', 'c2', 'WITH', 'c1.id = c2.recuring');
+
+        $notUsed = $this->createQueryBuilder('c3');
+        $notUsed->where($notUsed->expr()->notIn('c3.id', $used->getDQL()));
+
+        return $notUsed->getQuery()->execute();
+    }
+
     // /**
     //  * @return Recuring[] Returns an array of Recuring objects
     //  */
