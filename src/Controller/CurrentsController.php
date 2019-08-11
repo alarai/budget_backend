@@ -145,5 +145,36 @@ class CurrentsController extends AbstractController {
 
     }
 
+    /**
+     * @FOSRest\Get("/addrecur/{id<\d+>}", name="current_addrecur")
+     */
+    public function addRecuringOperation(RecuringRepository $recurings, $id)
+    {
+        $recuring = $recurings->find($id);
+        if ($recuring == null) {
+            return View::create(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $itemExist = $this->currentsRepository->findBy(["recuring" => $recuring]);
+        if ($itemExist) {
+            return View::create(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $operation = new Currents();
+
+        $operation->setName($recuring->getName());
+        $operation->setChecked(true);
+        $operation->setCategory($recuring->getCategory());
+        $operation->setType($recuring->getType());
+        $operation->setValue($recuring->getValue());
+        $operation->setRecuring($recuring);
+
+        $this->entityManager->persist($operation);
+        $this->entityManager->flush();
+
+
+        return View::create($operation, Response::HTTP_OK);
+    }
+
 
 }
