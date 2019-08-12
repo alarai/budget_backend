@@ -19,6 +19,18 @@ class HistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, History::class);
     }
 
+    public function getMonthsList()
+    {
+        $qb = $this->createQueryBuilder('h')
+            ->select(['h.year', 'h.month'])
+            ->groupBy('h.year')
+            ->addGroupBy('h.month')
+            ->orderBy('h.year', 'DESC')
+            ->addOrderBy('h.month', 'DESC');
+
+        return $qb->getQuery()->execute();
+    }
+
     // /**
     //  * @return History[] Returns an array of History objects
     //  */

@@ -39,4 +39,15 @@ class HistoryController extends  AbstractController {
 
         return View::create($historyData, Response::HTTP_OK);
     }
+
+    /**
+     * @FosRest\Get("/")
+     *
+     * @return View
+     */
+    public function getHistoryAvailablePeriods() {
+        $periods = $this->historyRepository->getMonthsList();
+
+        return View::create($periods, Response::HTTP_OK);
+    }
 }
