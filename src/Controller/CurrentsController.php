@@ -177,4 +177,24 @@ class CurrentsController extends AbstractController {
     }
 
 
+    /**
+     * @FOSRest\Get("/check/{id<\d+>}", name="current_checked")
+     */
+    public function checkOperation($id)
+    {
+        $operation = $this->currentsRepository->find($id);
+
+        if ($operation == null) {
+            return View::create(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $operation->setChecked(!$operation->getChecked());
+
+        $this->entityManager->persist($operation);
+        $this->entityManager->flush();
+
+
+        return View::create($operation, Response::HTTP_OK);
+    }
+
 }
