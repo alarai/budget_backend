@@ -61,6 +61,10 @@ class TypesController extends AbstractController {
     public function get($id) {
         $type = $this->typesRepository->find($id);
 
+        if($type===null) {
+            return View::create("The Type could not be found", Response::HTTP_NOT_FOUND);
+        }
+
         return View::create($type, Response::HTTP_OK);
     }
 

@@ -41,7 +41,7 @@ class HistoryController extends  AbstractController {
     }
 
     /**
-     * @FosRest\Get("/")
+     * @FosRest\Get("/periods")
      *
      * @return View
      */
@@ -49,5 +49,28 @@ class HistoryController extends  AbstractController {
         $periods = $this->historyRepository->getMonthsList();
 
         return View::create($periods, Response::HTTP_OK);
+    }
+
+    /**
+     * @FosRest\Get("/years")
+     *
+     * @return View
+     */
+    public function getHistoryAvailableYears() {
+        $years = $this->historyRepository->getYearsList();
+
+        return View::create($years, Response::HTTP_OK);
+    }
+
+    /**
+     * @FosRest\Get("/{year<\d+>}")
+     * @param $year
+     *
+     * @return View
+     */
+    public function getByYear($year) {
+        $historyData = $this->historyRepository->getChartHistoryData($year);
+
+        return View::create($historyData, Response::HTTP_OK);
     }
 }

@@ -31,6 +31,37 @@ class HistoryRepository extends ServiceEntityRepository
         return $qb->getQuery()->execute();
     }
 
+    public function getYearsList()
+    {
+        $qb = $this->createQueryBuilder('h')
+            ->select(['h.year'])
+            ->groupBy('h.year')
+            ->orderBy('h.year', 'DESC');
+
+        return $qb->getQuery()->execute();
+    }
+
+    public function getChartHistoryData($year)
+    {
+        $db = $this->getEntityManager()->getConnection();
+
+        $sql = "    SELECT CONCAT(CAST(month AS Char),'/',CAST(year AS CHAR)) AS period,  ROUND(SUM(value),2) AS sum
+                    FROM history o  
+                    WHERE year = :year
+                    GROUP BY year, month               
+               UNION
+                    SELECT 'current' AS period, ROUND(SUM(value),2) AS sum
+                    FROM currents o  
+                    WHERE YEAR(date) = :year
+                    GROUP BY period";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("year", $year, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     // /**
     //  * @return History[] Returns an array of History objects
     //  */
