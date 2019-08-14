@@ -30,7 +30,7 @@ class UserController extends AbstractController {
 
         $token = $jwt->encode([
             'username' => $user->getUsername(),
-            'exp' => time() + 3600 // 1 hour expiration
+            'exp' => time() + 60 // 1 hour expiration
         ]);
 
         return View::create($token, Response::HTTP_OK);

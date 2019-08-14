@@ -197,4 +197,48 @@ class CurrentsController extends AbstractController {
         return View::create($operation, Response::HTTP_OK);
     }
 
+
+
+
+
+    /**
+     *  @FOSRest\Post("/historize", name="current_historize")
+     */
+    public function historize(Request $request, CategoriesRepository $categoriesRepository, TypesRepository $typesRepository)
+    {
+        $data = json_decode($request->getContent());
+
+        if (!$data || !preg_match('/^20[0-9]{2}$/', $data->year) || !preg_match('/^1[0-2]$|^0?[1-9]$/', $data->month)) {
+            return View::create(null, Response::HTTP_BAD_REQUEST);
+        }
+        $this->entityManager->beginTransaction();
+        try {
+            $remain = $this->currentsRepository->getRemainingPassed()["value"];
+
+            $this->currentsRepository->historizeData($data->month, $data->year);
+            $this->currentsRepository->removeAllPassedOperations();
+
+            $category = $categoriesRepository->find(2);
+            $type = $typesRepository->find(4);
+
+
+            $current = new Currents();
+            $current->setDate(new \DateTime());
+            $current->setValue($remain);
+            $current->setType($type);
+            $current->setCategory($category);
+            $current->setChecked(true);
+            $current->setName("Previous month balance");
+
+            $this->entityManager->persist($current);
+            $this->entityManager->flush();
+
+            $this->entityManager->commit();
+        }catch (Exception $e) {
+            $this->entityManager->rollback();
+        }
+
+        return View::create(null, Response::HTTP_OK);
+    }
+
 }
