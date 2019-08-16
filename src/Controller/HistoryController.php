@@ -22,13 +22,19 @@ class HistoryController extends  AbstractController {
      */
     private $historyRepository;
 
+    /**
+     * HistoryController constructor.
+     * @param HistoryRepository $repository
+     */
     public function __construct(HistoryRepository $repository)
     {
         $this->historyRepository = $repository;
     }
 
     /**
-     * @FosRest\Get("/{year<\d+>}/{month<\d+>}")
+     * Get history for a specific year and month
+     *
+     * @FOSRest\Get("/{year<\d+>}/{month<\d+>}")
      * @param $year
      * @param $month
      *
@@ -41,7 +47,8 @@ class HistoryController extends  AbstractController {
     }
 
     /**
-     * @FosRest\Get("/periods")
+     * Get all available periods (month/year) in the current History
+     * @FOSRest\Get("/periods")
      *
      * @return View
      */
@@ -52,7 +59,9 @@ class HistoryController extends  AbstractController {
     }
 
     /**
-     * @FosRest\Get("/years")
+     * Get all available Years for history
+     *
+     * @FOSRest\Get("/years")
      *
      * @return View
      */
@@ -63,7 +72,9 @@ class HistoryController extends  AbstractController {
     }
 
     /**
-     * @FosRest\Get("/{year<\d+>}")
+     * Get all historical data for a year
+     *
+     * @FOSRest\Get("/{year<\d+>}")
      * @param $year
      *
      * @return View

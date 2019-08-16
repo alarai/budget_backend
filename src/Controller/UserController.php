@@ -14,7 +14,17 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController {
     /**
+     * User Login
+     *
      * @FOSRest\Post("/api/auth")
+     *
+     * @param $request Request
+     * @param $userRepository UserRepository
+     * @param $encoder UserPasswordEncoderInterface
+     * @param $jwt JWTEncoderInterface
+     *
+     * @return View
+     * @throws
      */
     public function login(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder, JWTEncoderInterface $jwt) {
         $data = json_decode($request->getContent());

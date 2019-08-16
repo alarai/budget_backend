@@ -8,8 +8,6 @@ use App\Repository\RecuringRepository;
 use App\Repository\TypesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
-use JMS\Serializer\SerializerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +33,7 @@ class RecuringController extends AbstractController {
     private $recuringRepository;
 
     /**
-     * CategoriesController constructor.
+     * RecuringController constructor.
      * @param EntityManagerInterface $entityManager
      * @param RecuringRepository $repository
      */
@@ -46,6 +44,8 @@ class RecuringController extends AbstractController {
     }
 
     /**
+     * Get all recuring operations
+     *
      * @FOSRest\Get("")
      *
      * @return View
@@ -57,6 +57,8 @@ class RecuringController extends AbstractController {
     }
 
     /**
+     * Get a specific recuring operation details
+     *
      * @FOSRest\Get("/{id}")
      *
      * @param $id integer
@@ -68,6 +70,14 @@ class RecuringController extends AbstractController {
         return View::create($recuring, Response::HTTP_OK);
     }
 
+    /**
+     * Save a Recuring entity
+     *
+     * @param $entity
+     * @param $data
+     * @param CategoriesRepository $catRepo
+     * @param TypesRepository $typRepo
+     */
     private function buildandSaveEntity($entity, $data, CategoriesRepository $catRepo, TypesRepository $typRepo) {
         $entity->setName($data->name);
         $entity->setType($typRepo->find($data->typeId));
@@ -79,7 +89,8 @@ class RecuringController extends AbstractController {
     }
 
     /**
-     * Create Category
+     * Create a recuring operation
+     *
      * @FOSRest\Post("")
      *
      * @param $request Request
@@ -97,7 +108,7 @@ class RecuringController extends AbstractController {
     }
 
     /**
-     * Delete category
+     * Delete a recuring operation
      * @FOSRest\Delete("/{id}")
      *
      * @param $id string
@@ -117,7 +128,7 @@ class RecuringController extends AbstractController {
     }
 
     /**
-     * Edit category
+     * Edit a recuring operation
      * @FOSRest\Put("/{id}")
      *
      * @param $request Request
@@ -140,6 +151,8 @@ class RecuringController extends AbstractController {
     }
 
     /**
+     * Get the list of not yet used recuring operations in current operations
+     *
      * @FOSRest\Get("unused")
      * @return View
      */

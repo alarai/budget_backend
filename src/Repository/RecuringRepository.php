@@ -19,6 +19,11 @@ class RecuringRepository extends ServiceEntityRepository
         parent::__construct($registry, Recuring::class);
     }
 
+    /**
+     * Returns the list of not already used recuring operations in current
+     *
+     * @return mixed
+     */
     public function getNotUsedInCurrent()
     {
         $used = $this->createQueryBuilder('c1')->select('c1.id')->join('App\Entity\Currents', 'c2', 'WITH', 'c1.id = c2.recuring');
@@ -28,33 +33,4 @@ class RecuringRepository extends ServiceEntityRepository
 
         return $notUsed->getQuery()->execute();
     }
-
-    // /**
-    //  * @return Recuring[] Returns an array of Recuring objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Recuring
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

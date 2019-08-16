@@ -31,7 +31,7 @@ class TypesController extends AbstractController {
     private $typesRepository;
 
     /**
-     * CategoriesController constructor.
+     * TypesController constructor.
      * @param EntityManagerInterface $entityManager
      * @param typesRepository $repository
      */
@@ -42,6 +42,8 @@ class TypesController extends AbstractController {
     }
 
     /**
+     * Get all types
+     *
      * @FOSRest\Get("")
      *
      * @return View
@@ -53,6 +55,8 @@ class TypesController extends AbstractController {
     }
 
     /**
+     *
+     * Get a specific type
      * @FOSRest\Get("/{id}")
      *
      * @param $id integer
@@ -69,7 +73,7 @@ class TypesController extends AbstractController {
     }
 
     /**
-     * Create Category
+     * Create a type
      * @FOSRest\Post("")
      *
      * @param $request Request
@@ -86,7 +90,7 @@ class TypesController extends AbstractController {
     }
 
     /**
-     * Delete category
+     * Delete a type
      * @FOSRest\Delete("/{id}")
      *
      * @param $id string
@@ -106,7 +110,7 @@ class TypesController extends AbstractController {
     }
 
     /**
-     * Edit category
+     * Edit a type
      * @FOSRest\Put("/{id}")
      *
      * @param $request Request

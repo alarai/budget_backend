@@ -9,7 +9,6 @@ use App\Repository\TypesRepository;
 use App\Repository\RecuringRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +45,7 @@ class CurrentsController extends AbstractController {
     }
 
     /**
+     * Get all currents
      * @FOSRest\Get("")
      *
      * @return View
@@ -57,6 +57,7 @@ class CurrentsController extends AbstractController {
     }
 
     /**
+     * Get a current details
      * @FOSRest\Get("/{id}")
      *
      * @param $id integer
@@ -68,10 +69,24 @@ class CurrentsController extends AbstractController {
         return View::create($currents, Response::HTTP_OK);
     }
 
+    /**
+     * Date formatter
+     *
+     * @param $str String to turn into date
+     * @return bool|\DateTime
+     */
     private function convertDate($str) {
         return \DateTime::createFromFormat("Y-m-d", $str);
     }
 
+    /**
+     * Save an entity
+     *
+     * @param Currents $entity
+     * @param $data New data to set
+     * @param CategoriesRepository $catRepo
+     * @param TypesRepository $typRepo
+     */
     private function buildandSaveEntity(Currents $entity, $data, CategoriesRepository $catRepo, TypesRepository $typRepo) {
         $entity->setName($data->name);
         $entity->setType($typRepo->find($data->typeId));
@@ -85,11 +100,12 @@ class CurrentsController extends AbstractController {
     }
 
     /**
-     * Create Category
+     * Create a current operation
      * @FOSRest\Post("")
      *
      * @param $request Request
-     * @param $serializer SerializerInterface
+     * @param $catRepo CategoriesRepository
+     * @param $typRepo TypesRepository
      * @return View
      */
     public function add(Request $request, CategoriesRepository $catRepo, TypesRepository $typRepo) {
@@ -103,7 +119,7 @@ class CurrentsController extends AbstractController {
     }
 
     /**
-     * Delete category
+     * Delete a current operation
      * @FOSRest\Delete("/{id}")
      *
      * @param $id string
@@ -123,15 +139,16 @@ class CurrentsController extends AbstractController {
     }
 
     /**
-     * Edit category
+     * Edit a current operation
      * @FOSRest\Put("/{id}")
      *
      * @param $request Request
-     * @param $serializer SerializerInterface
+     * @param $catRepo CategoriesRepository
+     * @param $typRepo TypesRepository
      * @param $id string
      * @return View
      */
-    public function update(Request $request, SerializerInterface $serializer, CategoriesRepository $catRepo, TypesRepository $typRepo, $id) {
+    public function update(Request $request, CategoriesRepository $catRepo, TypesRepository $typRepo, $id) {
         $currentMod = json_decode($request->getContent());
         $current = $this->currentsRepository->find($id);
 
@@ -146,6 +163,13 @@ class CurrentsController extends AbstractController {
     }
 
     /**
+     * Add a recuring operation to current operation
+     *
+     * @param $recurings RecuringRepository
+     * @param $id string
+     *
+     * @return View
+     *
      * @FOSRest\Get("/addrecur/{id<\d+>}", name="current_addrecur")
      */
     public function addRecuringOperation(RecuringRepository $recurings, $id)
@@ -178,6 +202,11 @@ class CurrentsController extends AbstractController {
 
 
     /**
+     * Change a current operation status
+     *
+     * @param $id string
+     * @return View
+     *
      * @FOSRest\Get("/check/{id<\d+>}", name="current_checked")
      */
     public function checkOperation($id)
@@ -202,6 +231,15 @@ class CurrentsController extends AbstractController {
 
 
     /**
+     * Historize all checked current operation
+     *
+     * @param $request Request
+     * @param $categoriesRepository CategoriesRepository
+     * @param TypesRepository $typesRepository
+     *
+     * @return View
+     * @throws
+     *
      *  @FOSRest\Post("/historize", name="current_historize")
      */
     public function historize(Request $request, CategoriesRepository $categoriesRepository, TypesRepository $typesRepository)

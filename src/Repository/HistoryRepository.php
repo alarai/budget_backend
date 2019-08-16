@@ -19,6 +19,11 @@ class HistoryRepository extends ServiceEntityRepository
         parent::__construct($registry, History::class);
     }
 
+    /**
+     * Get all year/month couples in history
+     *
+     * @return mixed
+     */
     public function getMonthsList()
     {
         $qb = $this->createQueryBuilder('h')
@@ -31,6 +36,11 @@ class HistoryRepository extends ServiceEntityRepository
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * Get all years in history
+     *
+     * @return mixed
+     */
     public function getYearsList()
     {
         $qb = $this->createQueryBuilder('h')
@@ -41,6 +51,13 @@ class HistoryRepository extends ServiceEntityRepository
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * Get data for historical chart of a year, including current month if data exists
+     *
+     * @param $year
+     * @return mixed[]
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function getChartHistoryData($year)
     {
         $db = $this->getEntityManager()->getConnection();
@@ -62,32 +79,4 @@ class HistoryRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
-    // /**
-    //  * @return History[] Returns an array of History objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('h')
-            ->andWhere('h.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('h.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?History
-    {
-        return $this->createQueryBuilder('h')
-            ->andWhere('h.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

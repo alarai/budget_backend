@@ -19,6 +19,11 @@ class CurrentsRepository extends ServiceEntityRepository
         parent::__construct($registry, Currents::class);
     }
 
+    /**
+     * Get the total value of current checked operations
+     *
+     * @return mixed
+     */
     public function getRemainingPassed()
     {
         $qb = $this->createQueryBuilder('c')
@@ -29,11 +34,23 @@ class CurrentsRepository extends ServiceEntityRepository
         return $qb->execute()[0];
     }
 
+    /**
+     * Remove all checked operations
+     *
+     * @return mixed
+     */
     public function removeAllPassedOperations()
     {
         return $this->createQueryBuilder('c')->delete()->where('c.checked = 1')->getQuery()->execute();
     }
 
+    /**
+     * Insert all checked operations into the requested history
+     *
+     * @param $month integer
+     * @param $year integer
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function historizeData($month, $year)
     {
         $db = $this->getEntityManager()->getConnection();
@@ -50,33 +67,4 @@ class CurrentsRepository extends ServiceEntityRepository
         $stmt->bindParam(2, $year, \PDO::PARAM_INT);
         $stmt->execute();
     }
-
-    // /**
-    //  * @return Currents[] Returns an array of Currents objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Currents
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

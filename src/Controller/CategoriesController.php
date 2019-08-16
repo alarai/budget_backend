@@ -42,6 +42,7 @@ class CategoriesController extends AbstractController {
     }
 
     /**
+     * Get the categories List
      * @FOSRest\Get("")
      *
      * @return View
@@ -53,6 +54,7 @@ class CategoriesController extends AbstractController {
     }
 
     /**
+     * Get a category details
      * @FOSRest\Get("/{id}")
      *
      * @param $id integer
@@ -85,7 +87,7 @@ class CategoriesController extends AbstractController {
     }
 
     /**
-     * Delete category
+     * Delete a category
      * @FOSRest\Delete("/{id}")
      *
      * @param $id string
@@ -105,7 +107,7 @@ class CategoriesController extends AbstractController {
     }
 
     /**
-     * Edit category
+     * Edit a category
      * @FOSRest\Put("/{id}")
      *
      * @param $request Request
