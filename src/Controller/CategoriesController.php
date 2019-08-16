@@ -121,10 +121,16 @@ class CategoriesController extends AbstractController {
         $category = $this->categoriesRepository->find($id);
 
         if($category !== null) {
+            if($categoryMod->getUseForHistory()) {
+                $this->categoriesRepository->removeAllUseForHistory();
+            }
+
             $category->setName($categoryMod->getName());
             $category->setUseForHistory($categoryMod->getUseForHistory());
             $this->entityManager->persist($category);
             $this->entityManager->flush();
+
+
 
             return View::create($category, Response::HTTP_OK);
         }

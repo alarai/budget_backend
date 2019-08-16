@@ -19,4 +19,15 @@ class CategoriesRepository extends ServiceEntityRepository
         parent::__construct($registry, Categories::class);
     }
 
+    /**
+     * remove all use for History flag currently present
+     */
+    public function removeAllUseForHistory() {
+        $db = $this->getEntityManager()->getConnection();
+
+        $sql = "UPDATE categories SET use_for_history = 0";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+    }
 }

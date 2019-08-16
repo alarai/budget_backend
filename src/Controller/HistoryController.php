@@ -78,6 +78,7 @@ class HistoryController extends  AbstractController {
      * @param $year
      *
      * @return View
+     * @throws
      */
     public function getByYear($year) {
         $historyData = $this->historyRepository->getChartHistoryData($year);
