@@ -122,6 +122,7 @@ class CategoriesController extends AbstractController {
 
         if($category !== null) {
             $category->setName($categoryMod->getName());
+            $category->setUseForHistory($categoryMod->getUseForHistory());
             $this->entityManager->persist($category);
             $this->entityManager->flush();
 

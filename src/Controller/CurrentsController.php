@@ -256,9 +256,18 @@ class CurrentsController extends AbstractController {
             $this->currentsRepository->historizeData($data->month, $data->year);
             $this->currentsRepository->removeAllPassedOperations();
 
-            $category = $categoriesRepository->find(2);
-            $type = $typesRepository->find(4);
+            $category = $categoriesRepository->findOneBy(["useForHistory" => true] );
+            $type = $typesRepository->findOneBy(["useForHistory" => true] );
 
+            if($category === null ) {
+                $this->entityManager->rollback();
+                return View::create("No Category was marked for historization", Response::HTTP_FAILED_DEPENDENCY);
+            }
+
+            if($type === null ) {
+                $this->entityManager->rollback();
+                return View::create("No Type was marked for historization", Response::HTTP_FAILED_DEPENDENCY);
+            }
 
             $current = new Currents();
             $current->setDate(new \DateTime());

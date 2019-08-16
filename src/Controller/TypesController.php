@@ -125,6 +125,7 @@ class TypesController extends AbstractController {
 
         if($type !== null) {
             $type->setName($typeMod->getName());
+            $type->setUseForHistory($typeMod->getUseForHistory());
             $this->entityManager->persist($type);
             $this->entityManager->flush();
 

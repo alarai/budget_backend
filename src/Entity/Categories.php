@@ -33,6 +33,11 @@ class Categories
      */
     private $currents;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $useForHistory;
+
     public function __construct()
     {
         $this->recurings = new ArrayCollection();
@@ -114,6 +119,18 @@ class Categories
                 $current->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUseForHistory(): ?bool
+    {
+        return $this->useForHistory;
+    }
+
+    public function setUseForHistory(bool $useForHistory): self
+    {
+        $this->useForHistory = $useForHistory;
 
         return $this;
     }
