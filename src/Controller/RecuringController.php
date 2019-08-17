@@ -51,7 +51,7 @@ class RecuringController extends AbstractController {
      * @return View
      */
     public function getAll() {
-        $recurings = $this->recuringRepository->findAll();
+        $recurings = $this->recuringRepository->getAllWithCounter();
 
         return View::create($recurings, Response::HTTP_OK);
     }

@@ -23,15 +23,6 @@ class Types
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recuring", mappedBy="type")
-     */
-    private $recurings;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Currents", mappedBy="type")
-     */
-    private $currents;
 
     /**
      * @ORM\Column(type="boolean")

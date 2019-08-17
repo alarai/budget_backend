@@ -30,4 +30,16 @@ class TypesRepository extends ServiceEntityRepository
         $stmt = $db->prepare($sql);
         $stmt->execute();
     }
+
+    public function getAllWithCounter()
+    {
+        $result = $this->createQueryBuilder('t')->
+        select('t.id, t.name, t.useForHistory, COUNT(DISTINCT cur.id) + COUNT( DISTINCT r.id) AS useCount')->
+        leftJoin('App\Entity\Currents', 'cur', 'WITH', 'cur.type = t.id')->
+        leftJoin('App\Entity\Recuring', 'r', 'WITH', 'r.type = t.id')->
+        orderBy("t.name", "ASC")->
+        groupBy("t.id");
+
+        return $result->getQuery()->execute();
+    }
 }

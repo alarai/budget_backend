@@ -23,15 +23,6 @@ class Categories
      */
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recuring", mappedBy="category")
-     */
-    private $recurings;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Currents", mappedBy="category")
-     */
-    private $currents;
 
     /**
      * @ORM\Column(type="boolean")

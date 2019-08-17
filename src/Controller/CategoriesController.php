@@ -48,7 +48,7 @@ class CategoriesController extends AbstractController {
      * @return View
      */
     public function getAll() {
-        $categories = $this->categoriesRepository->findAll();
+        $categories = $this->categoriesRepository->getAllWithCounter();
 
         return View::create($categories, Response::HTTP_OK);
     }

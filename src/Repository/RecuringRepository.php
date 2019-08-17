@@ -33,4 +33,18 @@ class RecuringRepository extends ServiceEntityRepository
 
         return $notUsed->getQuery()->execute();
     }
+
+    public function getAllWithCounter()
+    {
+        $result = $this->createQueryBuilder('r')->
+                    select('r.id, r.name, cat.name AS categoryName, t.name AS typeName, r.value, COUNT(c.id) AS currentsCount')->
+                    leftJoin('App\Entity\Currents', 'c', 'WITH', 'r.id = c.recuring')->
+                    innerJoin('App\Entity\Categories', 'cat', 'WITH', 'r.category = cat.id')->
+                    innerJoin('App\Entity\Types', 't', 'WITH', 'r.type = t.id')->
+                    orderBy("r.name","ASC")->
+                    groupBy("r.id");
+
+        return $result->getQuery()->execute();
+    }
+
 }

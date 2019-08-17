@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\Type;
 
 /**
@@ -19,6 +20,7 @@ class Currents
 
     /**
      * @ORM\Column(type="string", length=45)
+     * @Serializer\Groups({"listCurrents"})
      */
     private $name;
 
@@ -29,19 +31,19 @@ class Currents
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Categories", inversedBy="currents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Categories", inversedBy="currents", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Types", inversedBy="currents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Types", inversedBy="currents", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Recuring", inversedBy="currents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Recuring", inversedBy="currents", fetch="EXTRA_LAZY")
      */
     private $recuring;
 

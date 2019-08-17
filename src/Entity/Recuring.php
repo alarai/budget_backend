@@ -40,10 +40,6 @@ class Recuring
      */
     private $value;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Currents", mappedBy="recuring")
-     */
-    private $currents;
 
     public function __construct()
     {

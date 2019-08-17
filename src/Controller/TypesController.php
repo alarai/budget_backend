@@ -49,7 +49,7 @@ class TypesController extends AbstractController {
      * @return View
      */
     public function getAll() {
-        $types = $this->typesRepository->findAll();
+        $types = $this->typesRepository->getAllWithCounter();
 
         return View::create($types, Response::HTTP_OK);
     }

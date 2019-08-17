@@ -30,4 +30,16 @@ class CategoriesRepository extends ServiceEntityRepository
         $stmt = $db->prepare($sql);
         $stmt->execute();
     }
+
+    public function getAllWithCounter()
+    {
+        $result = $this->createQueryBuilder('cat')->
+                        select('cat.id, cat.name, cat.useForHistory, COUNT(DISTINCT cur.id) + COUNT(DISTINCT r.id) AS useCount')->
+                        leftJoin('App\Entity\Currents', 'cur', 'WITH', 'cur.category = cat.id')->
+                        leftJoin('App\Entity\Recuring', 'r', 'WITH', 'r.category = cat.id')->
+                        orderBy("cat.name", "ASC")->
+                        groupBy("cat.id");
+
+        return $result->getQuery()->execute();
+    }
 }
